@@ -1,0 +1,71 @@
+# JobCompass example configuration.
+# FREE by default. Paid providers are preconfigured but DISABLED:
+# to use them set enabled: true and provide credentials via an environment variable.
+
+db_path: companies.db
+user_agent: "jobcompass/0.1 (+personal-use; respects robots.txt)"
+rate_limit_seconds: 1.0
+
+sectors:
+  # NACE/national codes for the IT sector (software development & IT services).
+  it_prefixes: ["62", "63", "J62", "J63"]
+
+filters:
+  size_threshold: 250          # exclude below this employee count
+  blocklist_sector_prefixes: ["12", "C12", "92", "R92", "920"]  # tobacco, gambling
+
+it_adjacent:
+  # it_adjacent allowed only for large/multinational firms (e.g. energy, big banks).
+  allowed_size_classes: ["large", "multinational"]
+  finance_exclude_keywords: ["fintech", "trading", "hedge fund", "market maker"]
+
+output:
+  output_dir: output
+  cluster: true
+
+sources:
+  # --- Free (enabled by default) ---
+  - name: "SIRENE (France)"
+    country: FR
+    type: registry
+    transport: api
+    # New INSEE portal (portail-api.insee.fr): permanent API key in a header.
+    endpoint: "https://api.insee.fr/api-sirene/3.11/siret"
+    auth_header: "X-INSEE-Api-Key-Integration"  # CONFIRM the exact name on your portal
+    credentials_env: "${INSEE_API_KEY}"          # your key via environment variable
+    naf_prefixes: ["62", "63"]        # IT sector (software development / IT services)
+    departments: ["06", "74", "73"]   # example: border departments; set your own
+    limit: 100
+    enabled: false                    # set true after creating the account and adding the key
+  - name: "Zefix / LINDAS (Switzerland)"
+    country: CH
+    type: registry
+    transport: sparql
+    endpoint: "https://ld.admin.ch/query"   # LINDAS SPARQL endpoint
+    regions: ["VD", "ZH", "GE"]     # cantons: Vaud (Lausanne), Zurich, Geneva
+    cities: ["Lausanne", "Zürich", "Zurich", "Genève", "Geneva", "Genf"]  # multilingual variants
+    legal_forms: ["SA", "AG"]       # optional: capital companies only (excludes sole traders)
+    require_website: false          # NOTE: Zefix rarely fills the URL field → if true it zeroes results
+    limit: 100
+    # Zefix exposes no NACE nor headcount: IT sector is inferred from description
+    # keywords (heuristic). Customizable:
+    # it_keywords: ["software development", "cloud computing", "cybersecurity", ...]
+    # it_negatives: ["photo", "copy shop", "fiduciary", ...]
+    enabled: true
+  - name: "Chamber open data (Italy, partial)"
+    country: IT
+    type: registry
+    transport: opendata
+    endpoint: ""        # set an open-data endpoint here if available
+    enabled: true
+
+  # --- Paid (preconfigured, DISABLED: enable via config) ---
+  - name: "openapi.it (Italy, enrichment)"
+    country: IT
+    type: commercial
+    transport: api
+    endpoints:
+      search: "https://company.openapi.com/IT-search"
+      advanced: "https://company.openapi.com/IT-advanced/{vat}"
+    credentials_env: "${OPENAPI_IT_TOKEN}"
+    enabled: false      # set true + token to enable Italian enrichment

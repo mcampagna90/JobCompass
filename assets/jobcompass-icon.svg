@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JobCompass icon">
+  <defs>
+    <linearGradient id="jci-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="jci-needle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#jci-grad)"/>
+  <g transform="translate(64,64)">
+    <circle r="44" fill="#ffffff"/>
+    <g stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round">
+      <line x1="0" y1="-40" x2="0" y2="-33"/>
+      <line x1="0" y1="40" x2="0" y2="33"/>
+      <line x1="-40" y1="0" x2="-33" y2="0"/>
+      <line x1="40" y1="0" x2="33" y2="0"/>
+    </g>
+    <polygon points="0,-35 12,0 0,6 -12,0" fill="url(#jci-needle)"/>
+    <polygon points="0,35 12,0 0,-6 -12,0" fill="#2563eb"/>
+    <circle r="6" fill="#0f172a"/>
+    <circle r="2.2" fill="#ffffff"/>
+  </g>
+</svg>

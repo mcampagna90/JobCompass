@@ -1,0 +1,33 @@
+[project]
+name = "jobcompass"
+version = "0.1.0"
+description = "JobCompass — open-source job & company discovery tool. Discovers and maps companies from official public registries (SIRENE, Zefix/LINDAS) with your own custom filters."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["jobs", "job-search", "company-discovery", "open-data", "career"]
+dependencies = [
+    "PyYAML>=6.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+jobcompass = "jobcompass.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+jobcompass = ["vendor/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
