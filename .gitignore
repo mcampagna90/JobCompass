@@ -7,3 +7,4 @@ dist/
 *.db
 output/
 config.yaml
+.DS_Store
